@@ -31,11 +31,7 @@
       </a>
       <span class="divider">OR</span>
     </div>
-    <Form
-      @submit="onSubmitForm"
-      class="form"
-      v-slot="{ meta, isSubmitting, errors }"
-    >
+    <Form @submit="onSubmitForm" class="form" v-slot="{ meta }">
       <div class="error-message" v-if="isLogged">
         Your email and/or password are incorrect
       </div>
@@ -43,16 +39,19 @@
         <label class="form__label" for="email">Work Email</label>
         <Field
           name="email"
-          placeholder="you@company.com"
-          class="form__input"
-          v-slot="{ meta }"
-          v-model="email"
-          :class="{
-            'form__input-is-invalid': !meta.valid && meta.touched,
-          }"
+          type="email"
+          :rules="emailValidate"
+          v-slot="{ field, errorMessage, meta }"
         >
+          <input
+            id="email"
+            placeholder="you@company.com"
+            class="form__input"
+            v-bind="field"
+            :class="{ 'form__input-is-invalid': !meta.valid && meta.touched }"
+          />
+          <span v-if="errorMessage" class="error">{{ errorMessage }}</span>
         </Field>
-        <ErrorMessage name="email" class="error" />
       </div>
       <div class="form-group">
         <div class="form__label-container">
@@ -61,19 +60,22 @@
         </div>
         <Field
           name="password"
-          class="form__input"
           type="password"
-          placeholder="8+ Characters"
-          v-slot="{ meta }"
-          v-model="password"
-          :class="{
-            'form__input-is-invalid': !meta.valid && meta.touched,
-          }"
-        />
-        <ErrorMessage name="password" class="error" />
+          :rules="passwordValidate"
+          v-slot="{ field, errorMessage, meta }"
+        >
+          <input
+            id="password"
+            type="password"
+            v-bind="field"
+            class="form__input"
+            placeholder="8+ Characters"
+            :class="{ 'form__input-is-invalid': !meta.valid && meta.touched }"
+          />
+          <span v-if="errorMessage" class="error">{{ errorMessage }}</span>
+        </Field>
       </div>
       <div class="form-action">
-        <!-- disabled -->
         <button :disabled="!meta.valid" class="form-action__btn">Submit</button>
         <div class="form-action__signup">
           <p>
@@ -136,45 +138,55 @@
 </template>
 
 <script>
-import { Field, Form, ErrorMessage } from "vee-validate";
+import { Form, Field, ErrorMessage } from "vee-validate";
 import { isEmail, isLength } from "validator";
 
 export default {
-  components: { Field, Form, ErrorMessage },
+  components: { Form, Field, ErrorMessage },
 
   data() {
     return {
-      email: "",
-      password: "",
       isLogged: false,
+      emailName: "",
     };
   },
   methods: {
-    onSubmitForm(values) {
-      if (!values.email || !values.password) {
-        return;
-      }
+    onSubmitForm(formValues) {
+      console.log(
+        "🚀 ~ file: LoginForm.vue ~ line 157 ~ onSubmitForm ~ formValues",
+        formValues
+      );
 
-      this.login(values.email, values.password);
+      this.login(formValues.email, formValues.password);
     },
 
     emailValidate(emailValue) {
       if (!emailValue || !emailValue.trim()) {
         return "this field is required";
       }
+
       if (!isEmail(emailValue)) {
         return "Enter a valid email address.";
       }
+      this.emailName = emailValue.split("@")[0];
+      console.log(
+        "🚀 ~ file: LoginForm.vue ~ line 172 ~ emailValidate ~ emailName",
+        this.emailName
+      );
+      return true;
     },
 
     passwordValidate(passwordValue) {
       if (!passwordValue || !passwordValue.trim()) {
         return "this field is required";
       }
-
-      if (!isLength(passwordValue, { min: 6 })) {
+      if (passwordValue.length < 6) {
         return "password must be six characters or more";
       }
+
+      let regex = new RegExp("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$");
+      console.log(regex.test(passwordValue));
+      return true;
     },
 
     login(email, password) {

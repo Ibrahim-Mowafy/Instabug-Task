@@ -17,18 +17,12 @@
         @mouseenter="stopSlideTimer"
         @mouseout="startSlideTimer"
       ></carousel-item>
-      <carousel-controls
-        v-if="controls"
-        @prev="prev"
-        @next="next"
-      ></carousel-controls>
     </div>
   </div>
 </template>
 
 <script>
 import CarouselItem from "./CarouselItem.vue";
-import CarouselControls from "./CarouselControls.vue";
 import CarouselIndicators from "./CarouselIndicators.vue";
 
 export default {
@@ -36,10 +30,6 @@ export default {
     slides: {
       type: Array,
       required: true,
-    },
-    controls: {
-      type: Boolean,
-      default: false,
     },
     indicators: {
       type: Boolean,
@@ -50,7 +40,7 @@ export default {
       default: 5000,
     },
   },
-  components: { CarouselItem, CarouselControls, CarouselIndicators },
+  components: { CarouselItem, CarouselIndicators },
   data: () => ({
     currentSlide: 0,
     slideInterval: null,

@@ -150,11 +150,6 @@ export default {
   },
   methods: {
     onSubmitForm(formValues) {
-      console.log(
-        "🚀 ~ file: LoginForm.vue ~ line 157 ~ onSubmitForm ~ formValues",
-        formValues
-      );
-
       this.login(formValues.email, formValues.password);
     },
 
@@ -163,9 +158,7 @@ export default {
         return "this field is required";
       }
 
-      let emailRegex = new RegExp(
-        "^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$"
-      );
+      let emailRegex = new RegExp(/\b[\w\.-]+@[\w\.-]+\.\w{2,4}\b/);
 
       if (!emailValue.match(emailRegex)) {
         return "Enter a valid email address.";
@@ -177,25 +170,18 @@ export default {
 
     passwordValidate(passwordValue) {
       if (!passwordValue || !passwordValue.trim()) {
-        console.log("condition 1");
         return "this field is required";
       }
       if (passwordValue.length < 6) {
-        console.log("condition 2");
         return "password must be six characters or more";
       }
 
-      let passwordRegex = new RegExp(
-        "^(?=.*\d)(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$"
-      );
+      let passwordRegex = new RegExp(/(?=.*\d)(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$/);
 
-      if (!passwordValue.match(passwordRegex)) {
-        console.log("condition 3");
+      if (!passwordRegex.test(passwordValue)) {
         return "password must contain at least 1 uppercase letters and one number";
       }
-      console.log(passwordValue);
       if (passwordValue.includes(this.emailName) && this.emailName) {
-        console.log("condition 4");
         return "password shouldn't contain the email address name";
       }
 
@@ -410,9 +396,9 @@ export default {
       justify-content: space-between;
       align-items: center;
       /* min-width: 600px;
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%); */
+       position: absolute;
+       left: 50%;
+       transform: translateX(-50%); */
     }
     &__item {
       display: flex;

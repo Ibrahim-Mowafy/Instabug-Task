@@ -36,6 +36,11 @@ export default {
   width: 100%;
   margin-top: 5rem;
   padding-inline: 2rem;
+  align-items: center;
+
+  @media screen and (max-width: 425px) {
+    flex-direction: column;
+  }
 
   &__greeting {
     font-size: 2rem;

@@ -20,6 +20,7 @@ export default {
   flex-direction: column;
   width: 100%;
   background: #fff;
+  height: 100vh;
 }
 
 .not-found-image {

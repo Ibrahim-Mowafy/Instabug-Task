@@ -5,8 +5,6 @@
 </template>
 
 <style lang="scss">
-
-
 *,
 *::before,
 *::after {
@@ -30,5 +28,9 @@ main {
   justify-content: space-between;
   width: 100%;
   min-height: 100vh;
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+  }
 }
 </style>

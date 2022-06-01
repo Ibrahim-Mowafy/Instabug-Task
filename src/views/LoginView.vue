@@ -27,5 +27,9 @@ export default {
 .carousel-container {
   width: 49%;
   background-color: #00287a;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 }
 </style>

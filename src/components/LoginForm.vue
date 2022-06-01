@@ -211,6 +211,9 @@ export default {
   padding-inline: 7rem;
   padding-block: 2rem;
   position: relative;
+  @media screen and (max-width: 768px) {
+    width: 100%;
+  }
 
   &__logo,
   &__title {
@@ -395,6 +398,8 @@ export default {
       list-style: none;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
+
       /* min-width: 600px;
        position: absolute;
        left: 50%;

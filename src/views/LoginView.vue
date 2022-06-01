@@ -9,6 +9,7 @@
 // @ is an alias to /src
 import Carousel from "@/components/carousel/Carousel.vue";
 import LoginForm from "@/components/LoginForm.vue";
+import { slideImages } from "../data/dummy";
 
 export default {
   name: "WelcomeView",
@@ -17,11 +18,7 @@ export default {
     Carousel,
   },
   data: () => ({
-    slides: [
-      "https://svgshare.com/i/hrA.svg",
-      "https://svgshare.com/i/hrB.svg",
-      "https://svgshare.com/i/hrV.svg",
-    ],
+    slides: [...slideImages],
   }),
 };
 </script>

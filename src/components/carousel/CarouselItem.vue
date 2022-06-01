@@ -6,14 +6,21 @@
       @mouseenter="$emit('mouseenter')"
       @mouseout="$emit('mouseout')"
     >
-      <img :src="slide" />
+      <img :src="slide" alt="slide" />
+      <p class="slide-text">{{ slideText[currentSlide] }}</p>
     </div>
   </transition>
 </template>
 
 <script>
+import { slideText } from "../../data/dummy";
 export default {
   emits: ["mouseenter", "mouseout"],
+  data() {
+    return {
+      slideText,
+    };
+  },
   props: ["slide", "currentSlide", "index", "direction"],
   computed: {
     transitionEffect() {
@@ -30,6 +37,19 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
+}
+
+.carousel-item img {
+  padding: 15px;
+  width: 100%;
+}
+
+.slide-text {
+  margin-top: 3rem;
+  color: #fff;
+  font-size: 1.7rem;
+  text-align: center;
+  font-family: inherit;
 }
 
 .slide-in-enter-active,

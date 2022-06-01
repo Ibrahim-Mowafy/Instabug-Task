@@ -16,7 +16,7 @@
       <a class="social-buttons__item github-btn">
         <img
           class="social-buttons__item--image"
-          src="../assets/google_icon.svg"
+          src="../assets/github.png"
           alt="github logo"
         />
         <span class="social-buttons__item--text">GitHub</span>
@@ -93,43 +93,41 @@
         <li class="companies-logos__item">
           <img
             class="companies-logos__item--image"
-            src="../assets/google_icon.svg"
+            src="../assets/Lyft-Black-Logo.wine.svg"
             alt="logo"
           />
         </li>
         <li class="companies-logos__item">
           <img
             class="companies-logos__item--image"
-            src="../assets/google_icon.svg"
+            src="../assets/buzzfeed.svg"
             alt="logo"
+            style="height: 1rem"
           />
         </li>
         <li class="companies-logos__item">
           <img
             class="companies-logos__item--image"
-            src="../assets/google_icon.svg"
+            src="../assets/asana.svg"
             alt="logo"
+            style="height: 1.5rem"
+          />
+        </li>
+
+        <li class="companies-logos__item">
+          <img
+            class="companies-logos__item--image"
+            src="../assets/OnePlus-Logo.wine.svg"
+            alt="logo"
+            style="height: 4rem"
           />
         </li>
         <li class="companies-logos__item">
           <img
             class="companies-logos__item--image"
-            src="../assets/google_icon.svg"
+            src="../assets/houseparty.svg"
             alt="logo"
-          />
-        </li>
-        <li class="companies-logos__item">
-          <img
-            class="companies-logos__item--image"
-            src="../assets/google_icon.svg"
-            alt="logo"
-          />
-        </li>
-        <li class="companies-logos__item">
-          <img
-            class="companies-logos__item--image"
-            src="../assets/google_icon.svg"
-            alt="logo"
+            style="height: 4.5rem"
           />
         </li>
       </ul>
@@ -139,7 +137,7 @@
 
 <script>
 import { Form, Field, ErrorMessage } from "vee-validate";
-import { isEmail, isLength } from "validator";
+import { users } from "../data/dummy";
 
 export default {
   components: { Form, Field, ErrorMessage },
@@ -165,43 +163,50 @@ export default {
         return "this field is required";
       }
 
-      if (!isEmail(emailValue)) {
+      let emailRegex = new RegExp(
+        "^([A-Z|a-z|0-9](\.|_){0,1})+[A-Z|a-z|0-9]\@([A-Z|a-z|0-9])+((\.){0,1}[A-Z|a-z|0-9]){2}\.[a-z]{2,3}$"
+      );
+
+      if (!emailValue.match(emailRegex)) {
         return "Enter a valid email address.";
       }
+
       this.emailName = emailValue.split("@")[0];
-      console.log(
-        "🚀 ~ file: LoginForm.vue ~ line 172 ~ emailValidate ~ emailName",
-        this.emailName
-      );
       return true;
     },
 
     passwordValidate(passwordValue) {
       if (!passwordValue || !passwordValue.trim()) {
+        console.log("condition 1");
         return "this field is required";
       }
       if (passwordValue.length < 6) {
+        console.log("condition 2");
         return "password must be six characters or more";
       }
 
-      let regex = new RegExp("^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$");
-      console.log(regex.test(passwordValue));
+      let passwordRegex = new RegExp(
+        "^(?=.*\d)(?=.*[A-Z])(?=.*[a-zA-Z]).{6,}$"
+      );
+
+      if (!passwordValue.match(passwordRegex)) {
+        console.log("condition 3");
+        return "password must contain at least 1 uppercase letters and one number";
+      }
+      console.log(passwordValue);
+      if (passwordValue.includes(this.emailName) && this.emailName) {
+        console.log("condition 4");
+        return "password shouldn't contain the email address name";
+      }
+
       return true;
     },
 
     login(email, password) {
-      const users = [
-        { email: "mohamed@instabug.com", password: "A12345678" },
-        { email: "mohamed1@instabug.com", password: "A12345678" },
-        { email: "mohamed3@instabug.com", password: "A12345678" },
-        { email: "mohamed4@instabug.com", password: "A12345678" },
-        { email: "mohamed2@instabug.com", password: "A12345678" },
-        { email: "mohamed5@instabug.com", password: "A12345678" },
-        { email: "mohamed6@instabug.com", password: "A12345678" },
-        { email: "mohamed7@instabug.com", password: "A12345678" },
-      ];
-
-      for (const user of users) {
+      const usersData = [...users];
+      // based on this article i replaced for-of with normal for
+      // https://mirror-medium.com/?m=https%3A%2F%2Fmedium.com%2Fm%2Fglobal-identity%3FredirectUrl%3Dhttps%253A%252F%252Flevelup.gitconnected.com%252Fwhich-is-faster-for-for-of-foreach-loops-in-javascript-18dbd9ffbca9
+      for (const user of usersData) {
         if (email === user.email && password === user.password) {
           localStorage.setItem("LoggedUser", email);
           this.$router.push("/welcome");
@@ -219,6 +224,8 @@ export default {
   width: 49%;
   padding-inline: 7rem;
   padding-block: 2rem;
+  position: relative;
+
   &__logo,
   &__title {
     text-align: center;
@@ -392,7 +399,7 @@ export default {
   .companies-paragraph {
     text-align: center;
     margin-top: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.7rem;
     color: #a1a7b2;
   }
 
@@ -401,12 +408,17 @@ export default {
       display: flex;
       list-style: none;
       justify-content: space-between;
+      align-items: center;
+      /* min-width: 600px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); */
     }
     &__item {
       display: flex;
 
       &--image {
-        height: 3rem;
+        height: 2rem;
       }
     }
   }

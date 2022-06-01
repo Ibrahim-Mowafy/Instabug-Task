@@ -190,8 +190,6 @@ export default {
 
     login(email, password) {
       const usersData = [...users];
-      // based on this article i replaced for-of with normal for
-      // https://mirror-medium.com/?m=https%3A%2F%2Fmedium.com%2Fm%2Fglobal-identity%3FredirectUrl%3Dhttps%253A%252F%252Flevelup.gitconnected.com%252Fwhich-is-faster-for-for-of-foreach-loops-in-javascript-18dbd9ffbca9
       for (const user of usersData) {
         if (email === user.email && password === user.password) {
           localStorage.setItem("LoggedUser", email);

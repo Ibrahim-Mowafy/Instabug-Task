@@ -40,7 +40,6 @@ const router = createRouter({
 });
 
 function authGuard(to, from, next) {
-  console.log("fire authGuard");
   let isAuthenticated = false;
   if (localStorage.getItem("LoggedUser")) {
     isAuthenticated = true;
